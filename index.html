@@ -4,30 +4,67 @@
     <title>Cagnotte</title>
     <script src="https://unpkg.com/vue"></script>
 </head>
-<body >
+<body>
 <form id="app">
-    participant <input type="text" v-model="participant" @input="$event">
-    prix payé <input type="number" v-model="prix" @input="$event">
-<ul>
-  <!-- Render a li element for every entry in the computed filteredArticles array. -->
-
-  <li v-for="user in users">
-    <p>{{user.participant}} | {{user.prix}}€</p>
-  </li>
-</ul>
+    Nom <input type="text" v-model="participant">
+    à payé <input type="number" v-model="prix">
+    <ul>
+        <li>
+            <p>Nom | Payer | dois | reçois</p>
+        </li>
+        <li v-for="user in users">
+            <p>{{user.participant}} | {{user.prix}}€ | {{user.donne}}€ | {{user.recois}}€</p>
+        </li>
+        <li>
+            <p>total: {{total}} €</p>
+        </li>
+    </ul>
+    <input type="button" value="Valider" @click="add_user();calc()">
 </form>
 <script>
-    var app = new Vue({
+    const app = new Vue({
         el: "#app",
-      data: {
-          users: [
-            {
-              "participant":"Mumus",
-              "prix":"5"
+        data: {
+            users: [],
+            participant: "",
+            prix: "",
+            total: 0
+        },
+        computed: {},
+        methods: {
+            add_user: function () {
+                var participant = this.participant;
+                var prix = this.prix;
+                this.users.push(new user(participant, prix));
+            },
+            calc: function () {
+                this.total = 0;
+                for (i = 0; i < this.users.length; i++) {
+                  this.total += parseInt(this.users[i].prix);
+                }
+                this.moyenne = this.total / this.users.length;
+                    console.log("m: " + this.moyenne)
+                for (i = 0; i < this.users.length; i++){
+                    if (this.users[i].prix > this.moyenne) {
+                        this.users[i].recois = this.moyenne - this.users[i].prix;
+                    }
+                    if (this.users[i].prix < this.moyenne) {
+                        this.users[i].donne = this.moyenne - this.users[i].prix;
+                    }
+                }
             }
-          ]
-      }
+        }
     });
+
+    class user {
+        constructor(participant, prix) {
+            this.participant = participant;
+            this.prix = prix;
+            this.donne = 0;
+            this.recois = 0;
+        }
+    }
+
 </script>
 </body>
 </html>
