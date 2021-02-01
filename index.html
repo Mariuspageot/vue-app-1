@@ -4,13 +4,29 @@
     <title>Cagnotte</title>
     <script src="https://unpkg.com/vue"></script>
 </head>
-<body>
-<form>
-    participant <input v-model="participant" @input="$event">
+<body >
+<form id="app">
+    participant <input type="text" v-model="participant" @input="$event">
+    prix payé <input type="number" v-model="prix" @input="$event">
+<ul>
+  <!-- Render a li element for every entry in the computed filteredArticles array. -->
+
+  <li v-for="user in users">
+    <p>{{user.participant}} | {{user.prix}}€</p>
+  </li>
+</ul>
 </form>
 <script>
     var app = new Vue({
         el: "#app",
+      data: {
+          users: [
+            {
+              "participant":"Mumus",
+              "prix":"5"
+            }
+          ]
+      }
     });
 </script>
 </body>
